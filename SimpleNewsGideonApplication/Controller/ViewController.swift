@@ -28,7 +28,8 @@ class ViewController: UIViewController {
 //                let title = newsResponse?.headlines
 //                let snippet = newsResponse?.snippet
 //                let date = newsResponse?.date
-//                let image = newsResponse?.responses[0]?.multimedia[0]?.url
+                let image = newsResponse?.responses[1]?.multimedia[0]?.url
+                print(image)
                 self.news = newsResponse
                 self.newsTableView.reloadData()
             }
@@ -62,6 +63,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.newsFeed = news
         cell.indexCell = indexPath.row
+        cell.selectionStyle = .none
         return cell
     }
     

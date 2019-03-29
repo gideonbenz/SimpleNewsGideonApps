@@ -24,8 +24,9 @@ class NewsService {
     
     func getNewsService(completion: @escaping (NewsResponse?) -> Void) {
         if let newsURL = URL(string: "\(newsBaseURL!)") {
+            let request = URLRequest(url: newsURL)
+            let networkProcessor = NetworkProcessor(url: newsURL, request: request)
             
-            let networkProcessor = NetworkProcessor(url: newsURL)
             networkProcessor.downloadJSONFromURL { (jsonResponse) in
                 if let json = jsonResponse {
                     
