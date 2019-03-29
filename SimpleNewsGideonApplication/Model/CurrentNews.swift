@@ -79,17 +79,16 @@ struct CurrentNews {
     */
     let headline: String
     let snippet: String
-//    var image: URL?
-    var date: Date?
+    let date: Date?
     let dateFormatter = DateFormatter()
     
     // image here
-    let rank: Int
-    let subtype: String
-    let type: String
-    let url: String
-    let height: Int
-    let width: Int
+//    let rank: Int
+//    let subtype: String
+//    let type: String
+//    let url: String
+//    let height: Int
+//    let width: Int
     
     private struct NewsKeys {
         static let headlines = "headline"
@@ -97,6 +96,7 @@ struct CurrentNews {
         static let snippet = "snippet"
         static let image = "url"
         static let date = "pub_date"
+        static let multimedia = "multimedia"
     }
     
     private struct MultimediaKeys {
@@ -110,6 +110,9 @@ struct CurrentNews {
     
     init?(json : JSON) {
         
+//        guard let multimedia = json[NewsKeys.multimedia] as? arrayJSON else { return nil }
+//        guard let date = multimedia[]
+//        print(multimedia)
 //        get headline
         
         guard let headlines = json[NewsKeys.headlines] as? JSON else { return nil }
@@ -130,22 +133,26 @@ struct CurrentNews {
 //        get imageURL
         
         
+//        guard let multimedia = json[]
+//
+//        guard let rank = json[MultimediaKeys.rank] as? Int,
+//            let subtype = json[MultimediaKeys.subType] as? String,
+//            let type = json[MultimediaKeys.type] as? String,
+//            let urlString = json[MultimediaKeys.url] as? String,
+//            let height = json[MultimediaKeys.height] as? Int,
+//            let width = json[MultimediaKeys.width] as? Int
+//            else { return nil }
+//
+//        self.rank = rank
+//        self.subtype = subtype
+//        self.type = type
+//        self.url = urlString
+//        self.height = height
+//        self.width = width
         
-    
-        guard let rank = json[MultimediaKeys.rank] as? Int,
-            let subtype = json[MultimediaKeys.subType] as? String,
-            let type = json[MultimediaKeys.type] as? String,
-            let urlString = json[MultimediaKeys.url] as? String,
-            let height = json[MultimediaKeys.height] as? Int,
-            let width = json[MultimediaKeys.width] as? Int
-            else { return nil }
         
-        self.rank = rank
-        self.subtype = subtype
-        self.type = type
-        self.url = urlString
-        self.height = height
-        self.width = width
+//        -------------------------------------------------------------
+        
         
 //        guard let title = json[NewsKeys.title] as? String,
 //            let snippet = json[NewsKeys.snippet] as? String,

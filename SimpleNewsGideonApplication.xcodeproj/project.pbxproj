@@ -23,6 +23,7 @@
 		BD20615D224C8E29000861FF /* NewsSnippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD20615C224C8E29000861FF /* NewsSnippet.swift */; };
 		BD20615F224C8F41000861FF /* NewsDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD20615E224C8F41000861FF /* NewsDate.swift */; };
 		BD206161224C9121000861FF /* NewsImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD206160224C9121000861FF /* NewsImage.swift */; };
+		BD206163224DB2CE000861FF /* FrontNewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD206162224DB2CE000861FF /* FrontNewsTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		BD20615C224C8E29000861FF /* NewsSnippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSnippet.swift; sourceTree = "<group>"; };
 		BD20615E224C8F41000861FF /* NewsDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDate.swift; sourceTree = "<group>"; };
 		BD206160224C9121000861FF /* NewsImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsImage.swift; sourceTree = "<group>"; };
+		BD206162224DB2CE000861FF /* FrontNewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontNewsTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,8 +109,8 @@
 				BD206158224B3B86000861FF /* NewsHeadline.swift */,
 				BD20615C224C8E29000861FF /* NewsSnippet.swift */,
 				BD20615E224C8F41000861FF /* NewsDate.swift */,
-				BD20614A224A3A72000861FF /* CurrentNews.swift */,
 				BD206160224C9121000861FF /* NewsImage.swift */,
+				BD20614A224A3A72000861FF /* CurrentNews.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -116,6 +118,7 @@
 		BD206144224A2F46000861FF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BD206162224DB2CE000861FF /* FrontNewsTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				BD206149224A38FE000861FF /* NewsService.swift in Sources */,
 				BD20612F224A2DF7000861FF /* AppDelegate.swift in Sources */,
 				BD20615D224C8E29000861FF /* NewsSnippet.swift in Sources */,
+				BD206163224DB2CE000861FF /* FrontNewsTableViewCell.swift in Sources */,
 				BD206155224B394F000861FF /* NewsMultimedia.swift in Sources */,
 				BD206151224B3483000861FF /* NewsDocs.swift in Sources */,
 				BD20615F224C8F41000861FF /* NewsDate.swift in Sources */,

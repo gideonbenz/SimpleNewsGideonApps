@@ -22,7 +22,7 @@ class NewsService {
         newsBaseURL = URL(string: "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=\(newsAPIKey)")
     }
     
-    func getNewsService(completion: @escaping (CurrentNews?) -> Void) {
+    func getNewsService(completion: @escaping (NewsResponse?) -> Void) {
         if let newsURL = URL(string: "\(newsBaseURL!)") {
             
             let networkProcessor = NetworkProcessor(url: newsURL)
@@ -37,25 +37,7 @@ class NewsService {
                     let headlineNews = newsResponse?.headlines
                     let snippetNews = newsResponse?.snippet
                     let dateNews = newsResponse?.date
-                    
-//                    let image0 = newsResponse?.responses[0]?.multimedia[0]?.url
-//                    let image1 = newsResponse?.responses[1]?.multimedia[0]?.url
-//                    let image2 = newsResponse?.responses[2]?.multimedia[0]?.url
-//                    let image3 = newsResponse?.responses[3]?.multimedia[0]?.url
-//                    let image4 = newsResponse?.responses[4]?.multimedia[0]?.url
-//                    let image5 = newsResponse?.responses[5]?.multimedia[0]?.url
-//                    let image6 = newsResponse?.responses[6]?.multimedia[0]?.url
-//                    -----------------------------------------------------------
-//                    let image7 = newsResponse?.responses[7]?.multimedia[0]?.url
-//                    let image8 = newsResponse?.responses[8]?.multimedia[0]?.url
-//                    let image9 = newsResponse?.responses[9]?.multimedia[0]?.url
-                    
-//                    let imageNews = [image0, image1, image2, image3, image4, image5, image6]
-                    
-//                    print(imageNews)
-                    
-//                    let currentNews = CurrentNews(title: headlineNews, snippet: snippetNews, image: [""], date: dateNews)
-                    
+                    completion(newsResponse)
                     
 //                    let image = newsResponse?.responses[0]?.multimedia[0]
 //                    let image = newsResponse?.responses
