@@ -1,5 +1,5 @@
 //
-//  FrontNewsTableViewCell.swift
+//  FrontNewsTVCell.swift
 //  SimpleNewsGideonApplication
 //
 //  Created by Gideon Benz on 29/03/19.
@@ -8,12 +8,15 @@
 
 import UIKit
 
-class FrontNewsTableViewCell: UITableViewCell {
+class FrontNewsTVCell: UITableViewCell {
     @IBOutlet weak var newsImageView: UIImageView!
     @IBOutlet weak var newsHeadlineLabel: UILabel!
     @IBOutlet weak var newsDateLabel: UILabel!
     
     var indexCell: Int?
+    var date = Date()
+    var dateString = String()
+    var dateConverted = String()
     
     var newsFeed: NewsResponse! {
         didSet {
@@ -23,13 +26,19 @@ class FrontNewsTableViewCell: UITableViewCell {
     
     func updateUI() {
         if let indexCell = indexCell {
+//  MARK: Headline
             newsHeadlineLabel.text = "\(newsFeed.headlines[indexCell]!.headline)"
-            newsDateLabel.text = "\(newsFeed.date[indexCell]!.date!)"
             
+//  MARK: Date
+            date = newsFeed.date[indexCell]!.date!
+            dateString = "\(date)"
+            dateConverted = convertDateFormaterToNormal(dateString)
+            
+            newsDateLabel.text = "\(dateConverted)"
+            
+//  MARK: Image
             let newsMultimedia = newsFeed.responses[indexCell]!.multimedia
             
-//            let newsMultimedia7 = newsFeed.responses[7]?.multimedia /*nil*/
-//            let newsMultimedia8 = newsFeed.responses[8]?.multimedia /*nil*/
             let arrayWithNoOptionals = newsMultimedia.compactMap { $0 }
             
             if arrayWithNoOptionals.count != 0 {
@@ -45,7 +54,6 @@ class FrontNewsTableViewCell: UITableViewCell {
                         networkProcessor.downloadDataFromURL { (data, response, error) in
                             DispatchQueue.main.async {
                                 if let imageData = data {
-                                    print(imageData)
                                     self.newsImageView.image = UIImage(data: imageData)
                                 }
                             }
@@ -57,9 +65,6 @@ class FrontNewsTableViewCell: UITableViewCell {
         }
     }
     
-    
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -68,4 +73,14 @@ class FrontNewsTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
+}
+
+extension FrontNewsTVCell {
+    private func convertDateFormaterToNormal(_ date: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
+        let date = dateFormatter.date(from: date)
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        return  dateFormatter.string(from: date!)
+    }
 }

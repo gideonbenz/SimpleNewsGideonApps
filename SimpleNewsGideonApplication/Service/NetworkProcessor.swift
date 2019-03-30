@@ -8,6 +8,7 @@
 
 import Foundation
 
+//MARK: Link Sample
 //example from LinkAja
 //https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=9b693ffaa5fe451090146e5c90fbed78&q=indonesia&page=0
 
