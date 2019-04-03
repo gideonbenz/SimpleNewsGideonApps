@@ -24,8 +24,7 @@ class NewsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigation()
-        configureNewsService()
-//        configureSourceData()
+        configureSourceData()
     }
 }
 
@@ -36,67 +35,61 @@ extension NewsController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        switch isConnected {
-//        case true: if let newsDate = news?.date {
-//            return countOptionalArrayValue(optionalArray: newsDate)
-//            }
-//
-//        default:
-//            return newsCoreDataArray.count
-//        }
-//        return Int()
-        if let newsDate = news?.date {
+        switch isConnected {
+        case true: if let newsDate = news?.date {
             return countOptionalArrayValue(optionalArray: newsDate)
+            }
+
+        default:
+            return newsCoreDataArray.count
         }
-        return 0
+        return Int()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if isConnected == true {
-//
-//        } else {
-//            if let newsImage = newsCoreDataArray[indexPath.row]?.image {
-//                print(newsImage)
-//                if newsImage == "" {
-//                    let nonImageCell = tableView.dequeueReusableCell(withIdentifier: Storyboard.frontNewscell, for: indexPath) as! NewsCellNonImageTVCell
-//
-//                    nonImageCell.newsCoreDataFeed = newsCoreDataArray[indexPath.row]
-//                    nonImageCell.selectionStyle = .none
-//
-//                    return nonImageCell
-//
-//                } else {
-//                    let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.frontNewscell, for: indexPath) as! FrontNewsTVCell
-//
-//                    cell.newsCoreDataFeed = newsCoreDataArray[indexPath.row]
-//                    cell.selectionStyle = .none
-//
-//                    return cell
-//                }
-//            }
-//
-//        }
-//        return UITableViewCell()
-        let multimediaArray = news!.responses[indexPath.row]!.multimedia
-        
-        let cellStructureWithoutImage = structuringTableViewCellWithImage(multimediaArray: multimediaArray)
-        
-        if cellStructureWithoutImage == true {
-            let nonImagecell = tableView.dequeueReusableCell(withIdentifier: Storyboard.newsCellNonImage, for: indexPath) as! NewsCellNonImageTVCell
+        if isConnected == true {
+            let multimediaArray = news!.responses[indexPath.row]!.multimedia
             
-            nonImagecell.newsFeed = news
-            nonImagecell.indexCell = indexPath.row
-            nonImagecell.selectionStyle = .none
-            return nonImagecell
+            let cellStructureWithoutImage = structuringTableViewCellWithImage(multimediaArray: multimediaArray)
             
+            if cellStructureWithoutImage == true {
+                let nonImagecell = tableView.dequeueReusableCell(withIdentifier: Storyboard.newsCellNonImage, for: indexPath) as! NewsCellNonImageTVCell
+                
+                nonImagecell.newsFeed = news
+                nonImagecell.indexCell = indexPath.row
+                nonImagecell.selectionStyle = .none
+                return nonImagecell
+                
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.frontNewscell, for: indexPath) as! FrontNewsTVCell
+                
+                cell.newsFeed = news
+                cell.indexCell = indexPath.row
+                cell.selectionStyle = .none
+                return cell
+            }
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.frontNewscell, for: indexPath) as! FrontNewsTVCell
-            
-            cell.newsFeed = news
-            cell.indexCell = indexPath.row
-            cell.selectionStyle = .none
-            return cell
+            if let newsImage = newsCoreDataArray[indexPath.row]?.image {
+                if newsImage == "" {
+                    let nonImageCell = tableView.dequeueReusableCell(withIdentifier: Storyboard.newsCellNonImage, for: indexPath) as! NewsCellNonImageTVCell
+
+                    nonImageCell.newsCoreDataFeed = newsCoreDataArray[indexPath.row]
+                    nonImageCell.selectionStyle = .none
+
+                    return nonImageCell
+
+                } else {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.frontNewscell, for: indexPath) as! FrontNewsTVCell
+
+                    cell.newsCoreDataFeed = newsCoreDataArray[indexPath.row]
+                    cell.selectionStyle = .none
+
+                    return cell
+                }
+            }
+
         }
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

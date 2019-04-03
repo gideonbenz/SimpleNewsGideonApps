@@ -24,25 +24,25 @@ class FrontNewsTVCell: UITableViewCell {
         }
     }
     
-//    var newsCoreDataFeed: NewsCore! {
-//        didSet {
-//            self.updateCoreDataUI()
-//        }
-//    }
+    var newsCoreDataFeed: NewsCore! {
+        didSet {
+            self.updateCoreDataUI()
+        }
+    }
     
-//    func updateCoreDataUI() {
-//        if let headline = newsCoreDataFeed.headline {
-//            newsHeadlineLabel.text = headline
-//        }
-//
-//        if let date = newsCoreDataFeed.date {
-//            dateString = "\(date)"
-//            dateConverted = convertDateFormaterToNormal(dateString)
-//
-//            newsDateLabel.text = "\(dateConverted)"
-//        }
-//
-//        self.newsImageView.image = nil
+    func updateCoreDataUI() {
+        if let headline = newsCoreDataFeed.headline {
+            newsHeadlineLabel.text = headline
+        }
+
+        if let date = newsCoreDataFeed.date {
+            dateString = "\(date)"
+            dateConverted = convertDateFormaterToNormal(dateString)
+
+            newsDateLabel.text = "\(dateConverted)"
+        }
+
+        self.newsImageView.image = nil
 //        if let newsImage = newsCoreDataFeed.image {
 //            let urlString = "https://static01.nyt.com/\(newsImage)"
 //            let url = URL(string: urlString)
@@ -59,7 +59,7 @@ class FrontNewsTVCell: UITableViewCell {
 //                }
 //            }
 //        }
-//    }
+    }
     
     func updateUI() {
         if let indexCell = indexCell {
