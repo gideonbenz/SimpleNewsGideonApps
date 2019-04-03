@@ -24,6 +24,28 @@ class NewsCellNonImageTVCell: UITableViewCell {
         }
     }
     
+//    var newsCoreDataFeed: NewsCore! {
+//        didSet {
+//            self.updateCoreDataUI()
+//        }
+//    }
+    
+//    func updateCoreDataUI() {
+//        if let headline = newsCoreDataFeed.headline {
+//            headlineLabel.text = headline
+//        }
+//
+//        if let date = newsCoreDataFeed.date {
+//            dateString = "\(date)"
+//            dateConverted = convertDateFormaterToNormal(dateString)
+//
+//            dateLabel.text = "\(dateConverted)"
+//        }
+//    }
+    
+    
+    
+    
     func updateUI() {
         if let indexCell = indexCell {
             //  MARK: Headline

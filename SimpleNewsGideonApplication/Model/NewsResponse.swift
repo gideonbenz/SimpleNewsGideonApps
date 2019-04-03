@@ -13,7 +13,6 @@ struct NewsResponse {
     let headlines: [NewsHeadline?]
     let snippet: [NewsSnippet?]
     let date: [NewsDate?]
-    let currentNews: [CurrentNews?]
 //    let image: [NewsImage?]
     
     
@@ -36,8 +35,6 @@ struct NewsResponse {
         let dateObjects = responseArray.map {(NewsDate(json: $0))}
         self.date = dateObjects
         
-        let currentNewsObjects = responseArray.map {(CurrentNews(json: $0))}
-        self.currentNews = currentNewsObjects
 //        let imageObjects = responseArray.map {(NewsImage(json: $0))}
 //        self.image = imageObjects
     }

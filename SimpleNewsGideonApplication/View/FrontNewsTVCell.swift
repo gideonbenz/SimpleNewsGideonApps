@@ -24,6 +24,43 @@ class FrontNewsTVCell: UITableViewCell {
         }
     }
     
+//    var newsCoreDataFeed: NewsCore! {
+//        didSet {
+//            self.updateCoreDataUI()
+//        }
+//    }
+    
+//    func updateCoreDataUI() {
+//        if let headline = newsCoreDataFeed.headline {
+//            newsHeadlineLabel.text = headline
+//        }
+//
+//        if let date = newsCoreDataFeed.date {
+//            dateString = "\(date)"
+//            dateConverted = convertDateFormaterToNormal(dateString)
+//
+//            newsDateLabel.text = "\(dateConverted)"
+//        }
+//
+//        self.newsImageView.image = nil
+//        if let newsImage = newsCoreDataFeed.image {
+//            let urlString = "https://static01.nyt.com/\(newsImage)"
+//            let url = URL(string: urlString)
+//            if let url = url {
+//                let request = URLRequest(url: url)
+//                let networkProcessor = NetworkProcessor(url: url ,request: request)
+//
+//                networkProcessor.downloadDataFromURL { (data, response, error) in
+//                    DispatchQueue.main.async {
+//                        if let imageData = data {
+//                            self.newsImageView.image = UIImage(data: imageData)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
     func updateUI() {
         if let indexCell = indexCell {
 //  MARK: Headline
@@ -83,4 +120,6 @@ extension FrontNewsTVCell {
         dateFormatter.dateFormat = "dd-MM-yyyy"
         return  dateFormatter.string(from: date!)
     }
+    
+    
 }

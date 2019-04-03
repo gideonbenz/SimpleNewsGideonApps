@@ -1,5 +1,5 @@
 //
-//  CurrentNews.swift
+//  NewsCore
 //  SimpleNewsGideonApplication
 //
 //  Created by Gideon Benz on 26/03/19.
@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct CurrentNews {
+struct NewsCore {
     /*
      -. Judul   (✓)-
      -. Snippet (✓)
@@ -77,94 +77,36 @@ struct CurrentNews {
 
 
     */
-    let headline: String
-    let snippet: String
+    let headline: String?
+    let snippet: String?
     let date: Date?
     let dateFormatter = DateFormatter()
+    let image: String?
+    let id: Int16?
     
-    // image here
-//    let rank: Int
-//    let subtype: String
-//    let type: String
-//    let url: String
-//    let height: Int
-//    let width: Int
     
     private struct NewsKeys {
-        static let headlines = "headline"
-        static let headline = "main"
-        static let snippet = "snippet"
-        static let image = "url"
-        static let date = "pub_date"
-        static let multimedia = "multimedia"
+        static let headline = "headlineCore"
+        static let snippet = "snippetCore"
+        static let image = "imageCore"
+        static let date = "dateCore"
+        static let id = "idCore"
     }
     
-    private struct MultimediaKeys {
-        static let rank = "rank"
-        static let subType = "subtype"
-        static let type = "type"
-        static let url = "url"
-        static let height = "height"
-        static let width = "width"
+    init?(newsCoreData : NewsCoredata) {
+        
+        let headlineCore = newsCoreData.headlineCore
+        let snippetCore = newsCoreData.snippetCore
+        let dateCore = newsCoreData.dateCore
+        let imageCore = newsCoreData.imageCore
+        let id = newsCoreData.idCore
+        
+        self.headline = headlineCore
+        self.snippet = snippetCore
+        self.date = dateCore as Date?
+        self.image = imageCore
+        self.id = id
     }
     
-    init?(json : JSON) {
-        
-//        guard let multimedia = json[NewsKeys.multimedia] as? arrayJSON else { return nil }
-//        guard let date = multimedia[]
-//        print(multimedia)
-//        get headline
-        
-        guard let headlines = json[NewsKeys.headlines] as? JSON else { return nil }
-        guard let headline = headlines[NewsKeys.headline] as? String else { return nil }
-        self.headline = headline
-        
-//        get snippet
-        
-        guard let snippet = json[NewsKeys.snippet] as? String else { return nil }
-        self.snippet = snippet
-        
-//        get date
-        
-        guard let dateString = json[NewsKeys.date] as? String else { return nil }
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        self.date = dateFormatter.date(from: dateString)
-        
-//        get imageURL
-        
-        
-//        guard let multimedia = json[]
-//
-//        guard let rank = json[MultimediaKeys.rank] as? Int,
-//            let subtype = json[MultimediaKeys.subType] as? String,
-//            let type = json[MultimediaKeys.type] as? String,
-//            let urlString = json[MultimediaKeys.url] as? String,
-//            let height = json[MultimediaKeys.height] as? Int,
-//            let width = json[MultimediaKeys.width] as? Int
-//            else { return nil }
-//
-//        self.rank = rank
-//        self.subtype = subtype
-//        self.type = type
-//        self.url = urlString
-//        self.height = height
-//        self.width = width
-        
-        
-//        -------------------------------------------------------------
-        
-        
-//        guard let title = json[NewsKeys.title] as? String,
-//            let snippet = json[NewsKeys.snippet] as? String,
-//            let imageURLString = json[NewsKeys.image] as? String,
-//            let dateString = json[NewsKeys.date] as? String else {
-//            return nil
-//        }
-        
-//        self.title = title
-//        self.snippet = snippet
-//        self.image = URL(string: imageURLString)
-//        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-//        self.date = dateFormatter.date(from: dateString)
-    }
+    
 }
