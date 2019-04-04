@@ -33,20 +33,17 @@ class NewsService {
                     //this is my first attempt on try to parse json with model
                     let newsResponse = NewsResponse(json: json)
                     
-                    //parsing from model to CurrentNews here
+                    //parsing from model to NewsResponse here
                     
-                    let headlineNews = newsResponse?.headlines
-                    let snippetNews = newsResponse?.snippet
-                    let dateNews = newsResponse?.date
+//                    let headlineNews = newsResponse?.headlines
+//                    let snippetNews = newsResponse?.snippet
+//                    let dateNews = newsResponse?.date
                     completion(newsResponse)
                     
 //                    let image = newsResponse?.responses[0]?.multimedia[0]
 //                    let image = newsResponse?.responses
                    
 //          ------------------------------------------------------------------------------------
-                    
-                    //after this is the real one
-//                    let currentNews = CurrentNews(json: json)
                     
                 } else {completion(nil)
                     print("response dictionary casting problem")

@@ -14,18 +14,39 @@ class NewsController: UIViewController {
     var news: NewsResponse?
     var newsCoreDataArray = [NewsCore?]()
     var isConnected = Bool()
+    var selectedIndexPath: Int?
     let dispatchGroup = DispatchGroup()
     var imageArrayData = [Data]()
     
     private struct Storyboard {
     static let frontNewscell = "FrontNewsCell"
     static let newsCellNonImage = "NewsCellNonImage"
+    static let detailNewsSegueIdentifier = "DetailNews"
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigation()
         configureSourceData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Storyboard.detailNewsSegueIdentifier {
+            let detailNewsController = segue.destination as! DetailNewsController
+            
+            detailNewsController.isConnected = isConnected
+            
+            if let news = news {
+                detailNewsController.newsResponse = news
+            } else { print("failed pass newsResponse") }
+            
+            detailNewsController.newsCore = newsCoreDataArray
+            
+            if let selectedIndexPath = selectedIndexPath {
+                detailNewsController.selectedIndexPath = selectedIndexPath
+            } else { print("failed pass selectedIndexPath") }
+            
+        } else { print("bukan segue detail") }
     }
 }
 
@@ -89,6 +110,11 @@ extension NewsController: UITableViewDelegate, UITableViewDataSource {
 
         }
         return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedIndexPath = indexPath.row
+        performSegue(withIdentifier: Storyboard.detailNewsSegueIdentifier, sender: prepare)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

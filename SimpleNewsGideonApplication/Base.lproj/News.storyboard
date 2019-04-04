@@ -138,11 +138,20 @@
                     </navigationItem>
                     <connections>
                         <outlet property="newsTableView" destination="bRk-22-mFD" id="gdO-7t-Dd4"/>
+                        <segue destination="oT4-ys-wB6" kind="show" identifier="DetailNews" id="DfU-jt-ncB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="957.97101449275374" y="20.758928571428569"/>
+        </scene>
+        <!--DetailNews-->
+        <scene sceneID="OEn-9O-SkK">
+            <objects>
+                <viewControllerPlaceholder storyboardName="DetailNews" id="oT4-ys-wB6" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sBW-MJ-5v2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1507" y="3"/>
         </scene>
         <!--Favorite-->
         <scene sceneID="jIW-gn-9gt">
@@ -150,7 +159,7 @@
                 <viewControllerPlaceholder storyboardName="Favorite" id="ank-fK-ito" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HkP-d5-xug" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1488" y="21"/>
+            <point key="canvasLocation" x="1492" y="41"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="gAL-LA-T7p">

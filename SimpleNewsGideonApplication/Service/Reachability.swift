@@ -20,15 +20,15 @@ class Reachability {
         if (isNetworkReachable(with: flags)) {
             print(flags)
             if flags.contains(.isWWAN) {
-               UIAlertController(title: "via mobile", message: "Reachable", preferredStyle: .alert)
+//               UIAlertController(title: "via mobile", message: "Reachable", preferredStyle: .alert)
                 print("via mobile")
                 return true
             }
-            UIAlertController(title: "via wifi", message: "Reachable", preferredStyle: .alert)
+//            UIAlertController(title: "via wifi", message: "Reachable", preferredStyle: .alert)
             print("via wifi")
             return true
         } else if (!isNetworkReachable(with: flags)) {
-            UIAlertController(title: "Sorry no connection", message: "Unreachable", preferredStyle: .alert)
+//            UIAlertController(title: "Sorry no connection", message: "Unreachable", preferredStyle: .alert)
             print(flags)
             print("no connection")
             return false

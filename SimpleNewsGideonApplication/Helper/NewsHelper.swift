@@ -19,9 +19,9 @@ extension NewsController {
     }
     
     func configureSourceData() {
-        //1. check network
+        
         let connectionStatus = Reachability().checkReachable()
-        //2. jika on -> configureNewsService()
+        
         switch connectionStatus {
         case true: configureNewsService()
             isConnected = true
@@ -29,9 +29,6 @@ extension NewsController {
         default: configureCoreDataService()
             isConnected = false
         }
-        //3. jika off -> configureCoreDataService()
-        //4. jika pertama kali diharuskan configureNewsService() tapi karna tdk bisa dimunculin try to reload / tanda offline network
-        //5. ini di set untuk di viewDidLoad
     }
     
     func configureNewsService() {
@@ -101,12 +98,16 @@ extension NewsController {
                 if !firstRun {
                     do {
                         try PersistenceService.saveContext()
-                    } catch {}
+                    } catch let error as Error {print("failed SaveContext to Core Data",error)}
 
                     UserDefaults.standard.set(true, forKey: "firstRun")
                 }
                 else {
                     /*update current Datanya saja*/
+                    fetchCoreData { (newsCoreDatas) in
+                        self.newsCoreDataArray = newsCoreDatas
+                    }
+                    //ini baru fetch nanti cek ulang dan save
                 }
             }
         } else {print("failed open cache Entity Description")}
@@ -194,7 +195,6 @@ extension NewsController {
                         networkProcessor.downloadDataFromURL { (data, response, error) in
                             
                                 if let imageData = data {
-                                    print(imageData)
                                     self.imageArrayData[i] = imageData
                                     self.dispatchGroup.leave()
                                 }
