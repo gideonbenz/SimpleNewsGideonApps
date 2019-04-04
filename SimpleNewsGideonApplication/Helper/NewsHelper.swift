@@ -32,12 +32,10 @@ extension NewsController {
         //3. jika off -> configureCoreDataService()
         //4. jika pertama kali diharuskan configureNewsService() tapi karna tdk bisa dimunculin try to reload / tanda offline network
         //5. ini di set untuk di viewDidLoad
-        
     }
     
-    
-    //function ini hanya digunakan jikalau ada network!!!!
     func configureNewsService() {
+        let newsService = NewsService()
         newsService.getNewsService { (newsResponse) in
             DispatchQueue.main.async {
                 self.news = newsResponse
@@ -49,7 +47,13 @@ extension NewsController {
                 let dateWrapped = self.wrapDateArrayOfString(arrayMax: newsArrayCount, newsInput: newsResponse)
                 let imageWrapped = self.wrapImageArrayOfString(arrayMax: newsArrayCount, newsInput: newsResponse)
                 
-                self.setCacheCoreDataContainer(inputWrappedHeadlineArray: headlineWrapped, inputWrappedSnippetArray: snippetWrapped, inputWrappedDateArray: dateWrapped, inputWrappedImageArray: imageWrapped)
+                //convert imagenya jadi binary data baru dibawa ke setCacheCoreDataContainer
+                self.getImageBinaryDataArray(imageStringArray: imageWrapped, completion: { (dataNilArray) in
+                    self.dispatchGroup.notify(queue: .global(), execute: {
+                        
+                        self.setCacheCoreDataContainer(inputWrappedHeadlineArray: headlineWrapped, inputWrappedSnippetArray: snippetWrapped, inputWrappedDateArray: dateWrapped, inputWrappedImageArray: self.imageArrayData)
+                    })
+                })
             }
         }
     }
@@ -74,11 +78,11 @@ extension NewsController {
             }
             completion(newsCoreDataValue)
         } catch { }
-        
     }
     
-    func setCacheCoreDataContainer(inputWrappedHeadlineArray: [String?], inputWrappedSnippetArray: [String?], inputWrappedDateArray: [Date?], inputWrappedImageArray: [String?]) {
+    func setCacheCoreDataContainer(inputWrappedHeadlineArray: [String?], inputWrappedSnippetArray: [String?], inputWrappedDateArray: [Date?], inputWrappedImageArray: [Data]) {
         
+        let firstRun = UserDefaults.standard.bool(forKey: "firstRun") as Bool
         let context = PersistenceService.persistentContainer.viewContext
         if let cacheEntityDescription = NSEntityDescription.entity(forEntityName: "NewsCoredata", in: context) {
             
@@ -93,9 +97,17 @@ extension NewsController {
                 cache.setValue(inputWrappedDateArray[i], forKey: "dateCore")
                 cache.setValue(inputWrappedImageArray[i], forKey: "imageCore")
                 cache.setValue(i, forKey: "idCore")
-//                do {
-//                    try PersistenceService.saveContext()
-//                } catch {}
+                //if firstRun eksekusi ini
+                if !firstRun {
+                    do {
+                        try PersistenceService.saveContext()
+                    } catch {}
+
+                    UserDefaults.standard.set(true, forKey: "firstRun")
+                }
+                else {
+                    /*update current Datanya saja*/
+                }
             }
         } else {print("failed open cache Entity Description")}
     }
@@ -165,41 +177,42 @@ extension NewsController {
         }
         return wrappedImageString
     }
-}
-
-
-
-//MARK: TableView Functions
-extension NewsController {
     
-    //MARK: Table View Router Functions
-    func structuringTableViewCellWithImage(multimediaArray: [NewsMultimedia?]) -> Bool{
-        let unwrappedArray = arrayUnwrapped(arrayInput: multimediaArray)
-        let unwrappedArrayCounted = unwrappedArrayCounter(unwrappedArray: unwrappedArray)
-        let cellStructureWithoutImage = countedValueIsNil(countedValue: unwrappedArrayCounted)
-        return cellStructureWithoutImage
-    }
-    
-    //MARK: Execution Functions
-    func wrappedArrayOpenOptional(wrappedArrayOptionalInput: [Any?]?) -> [Any?] {
-        guard let arrayWrapped = wrappedArrayOptionalInput else { return [""] }
-        return arrayWrapped
-    }
-    
-    func arrayUnwrapped(arrayInput: [Any?]) -> [Any] {
-        let arrayUnwrapped = arrayInput.compactMap { $0 }
-        return arrayUnwrapped
-    }
-    
-    func unwrappedArrayCounter(unwrappedArray: [Any]) -> Int {
-        let arrayCountedValue = unwrappedArray.count
-        return arrayCountedValue
-    }
-    
-    func countedValueIsNil (countedValue: Int) -> Bool {
-        switch countedValue {
-        case 0: return true
-        default: return false
+    func getImageBinaryDataArray(imageStringArray: [String?], completion: @escaping ( ([Int]) -> Void)) {
+        let imageStringArrayCounted = imageStringArray.count
+        var imageDataNilArray = [Int]()
+        for i in 0..<imageStringArrayCounted {
+            self.imageArrayData.append(Data())
+            if let imageString = imageStringArray[i] {
+                if imageString != "" {
+                    let urlString = "https://static01.nyt.com/\(imageString)"
+                    let url = URL(string: urlString)
+                    if let url = url {
+                        let request = URLRequest(url: url)
+                        let networkProcessor = NetworkProcessor(url: url ,request: request)
+                        dispatchGroup.enter()
+                        networkProcessor.downloadDataFromURL { (data, response, error) in
+                            
+                                if let imageData = data {
+                                    print(imageData)
+                                    self.imageArrayData[i] = imageData
+                                    self.dispatchGroup.leave()
+                                }
+                        }
+                    }
+                }
+                else {
+                    imageDataNilArray.append(i)
+                    self.imageArrayData[i] = Data()
+                }
+            }
+        }
+        dispatchGroup.notify(queue: .global()) {
+                completion(imageDataNilArray)
         }
     }
 }
+
+
+
+

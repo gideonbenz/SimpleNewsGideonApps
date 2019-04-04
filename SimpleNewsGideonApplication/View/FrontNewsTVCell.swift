@@ -41,24 +41,12 @@ class FrontNewsTVCell: UITableViewCell {
 
             newsDateLabel.text = "\(dateConverted)"
         }
-
-        self.newsImageView.image = nil
-//        if let newsImage = newsCoreDataFeed.image {
-//            let urlString = "https://static01.nyt.com/\(newsImage)"
-//            let url = URL(string: urlString)
-//            if let url = url {
-//                let request = URLRequest(url: url)
-//                let networkProcessor = NetworkProcessor(url: url ,request: request)
-//
-//                networkProcessor.downloadDataFromURL { (data, response, error) in
-//                    DispatchQueue.main.async {
-//                        if let imageData = data {
-//                            self.newsImageView.image = UIImage(data: imageData)
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        
+        if newsCoreDataFeed.image != Data() {
+            if let imageCore = newsCoreDataFeed.image {
+                self.newsImageView.image = UIImage(data: imageCore)
+            }
+        } else { self.newsImageView.image = nil }
     }
     
     func updateUI() {

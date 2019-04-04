@@ -81,7 +81,7 @@ struct NewsCore {
     let snippet: String?
     let date: Date?
     let dateFormatter = DateFormatter()
-    let image: String?
+    let image: Data?
     let id: Int16?
     
     
@@ -104,7 +104,7 @@ struct NewsCore {
         self.headline = headlineCore
         self.snippet = snippetCore
         self.date = dateCore as Date?
-        self.image = imageCore
+        self.image = imageCore as Data?
         self.id = id
     }
     

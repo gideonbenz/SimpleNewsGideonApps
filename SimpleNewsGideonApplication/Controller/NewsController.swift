@@ -12,9 +12,10 @@ class NewsController: UIViewController {
     @IBOutlet weak var newsTableView: UITableView!
     
     var news: NewsResponse?
-    let newsService = NewsService()
     var newsCoreDataArray = [NewsCore?]()
     var isConnected = Bool()
+    let dispatchGroup = DispatchGroup()
+    var imageArrayData = [Data]()
     
     private struct Storyboard {
     static let frontNewscell = "FrontNewsCell"
@@ -36,13 +37,11 @@ extension NewsController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch isConnected {
-        case true: if let newsDate = news?.date {
-            return countOptionalArrayValue(optionalArray: newsDate)
+            case true: if let newsDate = news?.date {
+                return countOptionalArrayValue(optionalArray: newsDate)
             }
-
-        default:
-            return newsCoreDataArray.count
-        }
+            default: return newsCoreDataArray.count
+            }
         return Int()
     }
     
@@ -70,7 +69,7 @@ extension NewsController: UITableViewDelegate, UITableViewDataSource {
             }
         } else {
             if let newsImage = newsCoreDataArray[indexPath.row]?.image {
-                if newsImage == "" {
+                if newsImage == Data() {
                     let nonImageCell = tableView.dequeueReusableCell(withIdentifier: Storyboard.newsCellNonImage, for: indexPath) as! NewsCellNonImageTVCell
 
                     nonImageCell.newsCoreDataFeed = newsCoreDataArray[indexPath.row]

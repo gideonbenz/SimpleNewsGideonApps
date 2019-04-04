@@ -31,6 +31,7 @@
 		BD2061D322534EF8000861FF /* NewsCoredata+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2061D122534EF8000861FF /* NewsCoredata+CoreDataProperties.swift */; };
 		BD2061D522548B1B000861FF /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2061D422548B1B000861FF /* Reachability.swift */; };
 		BD2061DB2254AEAC000861FF /* FrontNewsTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2061DA2254AEAC000861FF /* FrontNewsTVCell.swift */; };
+		BD2061DD2254B7D3000861FF /* TableViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2061DC2254B7D3000861FF /* TableViewHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		BD2061D122534EF8000861FF /* NewsCoredata+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewsCoredata+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BD2061D422548B1B000861FF /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		BD2061DA2254AEAC000861FF /* FrontNewsTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrontNewsTVCell.swift; sourceTree = "<group>"; };
+		BD2061DC2254B7D3000861FF /* TableViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				BD20619E2251B8F8000861FF /* NewsHelper.swift */,
+				BD2061DC2254B7D3000861FF /* TableViewHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD206131224A2DF7000861FF /* NewsController.swift in Sources */,
+				BD2061DD2254B7D3000861FF /* TableViewHelper.swift in Sources */,
 				BD206147224A2F63000861FF /* NetworkProcessor.swift in Sources */,
 				BD2061D222534EF8000861FF /* NewsCoredata+CoreDataClass.swift in Sources */,
 				BD206149224A38FE000861FF /* NewsService.swift in Sources */,
