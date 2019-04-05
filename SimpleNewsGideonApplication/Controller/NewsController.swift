@@ -36,10 +36,6 @@ class NewsController: UIViewController {
             
             detailNewsController.isConnected = isConnected
             
-            if let news = news {
-                detailNewsController.newsResponse = news
-            } else { print("failed pass newsResponse") }
-            
             detailNewsController.newsCore = newsCoreDataArray
             
             if let selectedIndexPath = selectedIndexPath {
@@ -57,38 +53,38 @@ extension NewsController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch isConnected {
-            case true: if let newsDate = news?.date {
-                return countOptionalArrayValue(optionalArray: newsDate)
-            }
-            default: return newsCoreDataArray.count
-            }
-        return Int()
+//        switch isConnected {
+//            case true: if let newsDate = news?.date {
+//                return countOptionalArrayValue(optionalArray: newsDate)
+//            }
+//            default: return newsCoreDataArray.count
+//            }
+        return (newsCoreDataArray.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if isConnected == true {
-            let multimediaArray = news!.responses[indexPath.row]!.multimedia
-            
-            let cellStructureWithoutImage = structuringTableViewCellWithImage(multimediaArray: multimediaArray)
-            
-            if cellStructureWithoutImage == true {
-                let nonImagecell = tableView.dequeueReusableCell(withIdentifier: Storyboard.newsCellNonImage, for: indexPath) as! NewsCellNonImageTVCell
-                
-                nonImagecell.newsFeed = news
-                nonImagecell.indexCell = indexPath.row
-                nonImagecell.selectionStyle = .none
-                return nonImagecell
-                
-            } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.frontNewscell, for: indexPath) as! FrontNewsTVCell
-                
-                cell.newsFeed = news
-                cell.indexCell = indexPath.row
-                cell.selectionStyle = .none
-                return cell
-            }
-        } else {
+//        if isConnected == true {
+//            let multimediaArray = news!.responses[indexPath.row]!.multimedia
+//
+//            let cellStructureWithoutImage = structuringTableViewCellWithImage(multimediaArray: multimediaArray)
+//
+//            if cellStructureWithoutImage == true {
+//                let nonImagecell = tableView.dequeueReusableCell(withIdentifier: Storyboard.newsCellNonImage, for: indexPath) as! NewsCellNonImageTVCell
+//
+//                nonImagecell.newsFeed = news
+//                nonImagecell.indexCell = indexPath.row
+//                nonImagecell.selectionStyle = .none
+//                return nonImagecell
+//
+//            } else {
+//                let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.frontNewscell, for: indexPath) as! FrontNewsTVCell
+//
+//                cell.newsFeed = news
+//                cell.indexCell = indexPath.row
+//                cell.selectionStyle = .none
+//                return cell
+//            }
+//        } else {
             if let newsImage = newsCoreDataArray[indexPath.row]?.image {
                 if newsImage == Data() {
                     let nonImageCell = tableView.dequeueReusableCell(withIdentifier: Storyboard.newsCellNonImage, for: indexPath) as! NewsCellNonImageTVCell
@@ -107,10 +103,10 @@ extension NewsController: UITableViewDelegate, UITableViewDataSource {
                     return cell
                 }
             }
-
+            return UITableViewCell()
         }
-        return UITableViewCell()
-    }
+//        return UITableViewCell()
+//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedIndexPath = indexPath.row

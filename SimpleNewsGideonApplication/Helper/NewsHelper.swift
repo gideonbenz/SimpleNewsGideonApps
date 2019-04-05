@@ -35,8 +35,9 @@ extension NewsController {
         let newsService = NewsService()
         newsService.getNewsService { (newsResponse) in
             DispatchQueue.main.async {
-                self.news = newsResponse
-                self.newsTableView.reloadData()
+                // ini edit berdasarkan fetch awal
+//                self.news = newsResponse
+//                self.newsTableView.reloadData()
                 
                 let newsArrayCount = newsResponse!.date.count
                 let headlineWrapped = self.wrapHeadlineArrayOfString(arrayMax: newsArrayCount, newsInput: newsResponse)
@@ -57,8 +58,10 @@ extension NewsController {
     
     func configureCoreDataService() {
         fetchCoreData { (newsCoreDatas) in
-            self.newsCoreDataArray = newsCoreDatas
-            self.newsTableView.reloadData()
+            DispatchQueue.main.async {
+                self.newsCoreDataArray = newsCoreDatas
+                self.newsTableView.reloadData()
+            }
         }
     }
     
@@ -87,29 +90,42 @@ extension NewsController {
             let countedEachCategoryArray = (inputWrappedHeadlineArray.count + inputWrappedSnippetArray.count + inputWrappedDateArray.count + inputWrappedImageArray.count) / 4
                 print("News Network each array count: \(countedEachCategoryArray)")
             
-            for i in 0..<countedEachCategoryArray {
-                let cache = NSManagedObject(entity: cacheEntityDescription, insertInto: context)
-                cache.setValue(inputWrappedHeadlineArray[i], forKey: "headlineCore")
-                cache.setValue(inputWrappedSnippetArray[i], forKey: "snippetCore")
-                cache.setValue(inputWrappedDateArray[i], forKey: "dateCore")
-                cache.setValue(inputWrappedImageArray[i], forKey: "imageCore")
-                cache.setValue(i, forKey: "idCore")
+            
                 //if firstRun eksekusi ini
                 if !firstRun {
-                    do {
-                        try PersistenceService.saveContext()
-                    } catch let error as Error {print("failed SaveContext to Core Data",error)}
-
-                    UserDefaults.standard.set(true, forKey: "firstRun")
+                    for i in 0..<countedEachCategoryArray {
+                        let cache = NSManagedObject(entity: cacheEntityDescription, insertInto: context)
+                        cache.setValue(inputWrappedHeadlineArray[i], forKey: "headlineCore")
+                        cache.setValue(inputWrappedSnippetArray[i], forKey: "snippetCore")
+                        cache.setValue(inputWrappedDateArray[i], forKey: "dateCore")
+                        cache.setValue(inputWrappedImageArray[i], forKey: "imageCore")
+                        cache.setValue(i, forKey: "idCore")
+                    
+                            do {
+                                try PersistenceService.saveContext()
+                            } catch let error as Error {print("failed SaveContext to Core Data",error)}
+                        
+                                    fetchCoreData { (newsCoreDatas) in
+                                        DispatchQueue.main.async {
+                                            self.newsCoreDataArray = newsCoreDatas
+                                            self.newsTableView.reloadData()
+                                        }
+                                    }
+                            UserDefaults.standard.set(true, forKey: "firstRun")
+                            }
                 }
                 else {
                     /*update current Datanya saja*/
                     fetchCoreData { (newsCoreDatas) in
-                        self.newsCoreDataArray = newsCoreDatas
+                        //abis fetch di save di ID key nya
+                        DispatchQueue.main.async {
+                            self.newsCoreDataArray = newsCoreDatas
+                            self.newsTableView.reloadData()
+                        }
                     }
                     //ini baru fetch nanti cek ulang dan save
                 }
-            }
+            
         } else {print("failed open cache Entity Description")}
     }
     

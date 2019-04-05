@@ -14,7 +14,6 @@ class DetailNewsController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var snippetLabel: UILabel!
     
-    var newsResponse: NewsResponse?
     var newsCore: [NewsCore?]?
     var isConnected: Bool?
     var imageArrayData = [Data]()

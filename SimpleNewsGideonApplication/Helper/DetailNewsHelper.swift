@@ -16,15 +16,15 @@ extension DetailNewsController {
     }
     
     func configureDataSource() {
-        guard let isConnected = isConnected else { return }
-        switch isConnected {
-            case true: configureWithNews()
-            default: configureWithCoreData()
-        }
+//        guard let isConnected = isConnected else { return }
+//        switch isConnected {
+//            case true: configureWithNews()
+//            default: configureWithCoreData()
+//        }
+        configureWithCoreData()
     }
     
     func configureWithNews() {
-        guard let newsResponse = newsResponse else { return }
         guard let newsCore = newsCore else { return }
         guard let selectedIndexPath = selectedIndexPath else { return }
         
@@ -68,7 +68,28 @@ extension DetailNewsController {
     }
     
     func configureWithCoreData() {
-        //coreData
+        guard let newsCore = newsCore else { return }
+        guard let selectedIndexPath = selectedIndexPath else { return }
+        
+        if let headline = newsCore[selectedIndexPath]?.headline {
+            self.headlineLabel.text = headline
+        }
+        
+        if let snippet = newsCore[selectedIndexPath]?.snippet {
+            self.snippetLabel.text = snippet
+            self.snippetLabel.sizeToFit()
+        }
+        
+        if let date = newsCore[selectedIndexPath]?.date {
+            let dateConverted = convertDateFormaterToNormal("\(date)")
+            self.dateLabel.text = dateConverted
+        }
+        
+        if let imageBinary = newsCore[selectedIndexPath]?.image {
+            if imageBinary != Data() {
+                self.newsImageView.image = UIImage(data: imageBinary)
+            } else { self.newsImageView.image = nil }
+        }
     }
 }
 
