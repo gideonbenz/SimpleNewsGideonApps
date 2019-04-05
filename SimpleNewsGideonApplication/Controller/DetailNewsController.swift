@@ -13,6 +13,7 @@ class DetailNewsController: UIViewController {
     @IBOutlet weak var newsImageView: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var snippetLabel: UILabel!
+    @IBOutlet var detailView: UIView!
     
     var newsCore: [NewsCore?]?
     var isConnected: Bool?

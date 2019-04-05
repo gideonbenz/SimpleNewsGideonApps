@@ -63,6 +63,7 @@
                     <navigationItem key="navigationItem" id="YQV-Jp-dh8"/>
                     <connections>
                         <outlet property="dateLabel" destination="BBm-i8-AL8" id="dkz-Yn-if0"/>
+                        <outlet property="detailView" destination="hWI-1U-4NV" id="H2g-pw-cjk"/>
                         <outlet property="headlineLabel" destination="Q4o-sd-ULM" id="A6u-x3-Ss8"/>
                         <outlet property="newsImageView" destination="FfA-zV-ef6" id="thl-Xm-qPV"/>
                         <outlet property="snippetLabel" destination="4e2-g3-wBE" id="v8q-y0-r8D"/>

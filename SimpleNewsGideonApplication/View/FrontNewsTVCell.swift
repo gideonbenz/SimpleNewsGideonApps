@@ -18,12 +18,6 @@ class FrontNewsTVCell: UITableViewCell {
     var dateString = String()
     var dateConverted = String()
     
-    var newsFeed: NewsResponse! {
-        didSet {
-            self.updateUI()
-        }
-    }
-    
     var newsCoreDataFeed: NewsCore! {
         didSet {
             self.updateCoreDataUI()
@@ -47,47 +41,6 @@ class FrontNewsTVCell: UITableViewCell {
                 self.newsImageView.image = UIImage(data: imageCore)
             }
         } else { self.newsImageView.image = nil }
-    }
-    
-    func updateUI() {
-        if let indexCell = indexCell {
-//  MARK: Headline
-            newsHeadlineLabel.text = "\(newsFeed.headlines[indexCell]!.headline)"
-            
-//  MARK: Date
-            date = newsFeed.date[indexCell]!.date!
-            dateString = "\(date)"
-            dateConverted = convertDateFormaterToNormal(dateString)
-            
-            newsDateLabel.text = "\(dateConverted)"
-            
-//  MARK: Image
-            let newsMultimedia = newsFeed.responses[indexCell]!.multimedia
-            
-            let arrayWithNoOptionals = newsMultimedia.compactMap { $0 }
-            
-            if arrayWithNoOptionals.count != 0 {
-                
-                let newsImage = newsMultimedia[0]?.url
-                if let newsImage = newsImage {
-                    let urlString = "https://static01.nyt.com/\(newsImage)"
-                    let url = URL(string: urlString)
-                    if let url = url {
-                        let request = URLRequest(url: url)
-                        let networkProcessor = NetworkProcessor(url: url ,request: request)
-                        
-                        networkProcessor.downloadDataFromURL { (data, response, error) in
-                            DispatchQueue.main.async {
-                                if let imageData = data {
-                                    self.newsImageView.image = UIImage(data: imageData)
-                                }
-                            }
-                        }
-                    }
-                }
-            } else { self.newsImageView.image = nil }
-            
-        }
     }
     
     override func awakeFromNib() {

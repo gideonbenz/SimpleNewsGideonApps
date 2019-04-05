@@ -18,12 +18,6 @@ class NewsCellNonImageTVCell: UITableViewCell {
     var dateString = String()
     var dateConverted = String()
     
-    var newsFeed: NewsResponse! {
-        didSet {
-            self.updateUI()
-        }
-    }
-    
     var newsCoreDataFeed: NewsCore! {
         didSet {
             self.updateCoreDataUI()
@@ -42,25 +36,6 @@ class NewsCellNonImageTVCell: UITableViewCell {
             dateLabel.text = "\(dateConverted)"
         }
     }
-    
-    
-    
-    
-    func updateUI() {
-        if let indexCell = indexCell {
-            //  MARK: Headline
-            headlineLabel.text = "\(newsFeed.headlines[indexCell]!.headline)"
-            
-            //  MARK: Date
-            date = newsFeed.date[indexCell]!.date!
-            dateString = "\(date)"
-            dateConverted = convertDateFormaterToNormal(dateString)
-            
-            dateLabel.text = "\(dateConverted)"
-        }
-    }
-    
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
