@@ -12,5 +12,13 @@ import CoreData
 
 
 public class NewsCoredata: NSManagedObject {
-
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<NewsCoredata> {
+        return NSFetchRequest<NewsCoredata>(entityName: "NewsCoredata")
+    }
+    
+    @NSManaged public var dateCore: NSDate?
+    @NSManaged public var headlineCore: String?
+    @NSManaged public var idCore: Int16
+    @NSManaged public var imageCore: NSData?
+    @NSManaged public var snippetCore: String?
 }

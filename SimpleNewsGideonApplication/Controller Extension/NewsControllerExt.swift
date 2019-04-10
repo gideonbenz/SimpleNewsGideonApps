@@ -1,5 +1,5 @@
 //
-//  NewsHelper.swift
+//  NewsControllerExtension.swift
 //  SimpleNewsGideonApplication
 //
 //  Created by Gideon Benz on 01/04/19.
@@ -16,6 +16,7 @@ extension NewsController {
         self.navigationItem.title = "Simple News Apps"
         newsTableView.dataSource = self
         newsTableView.delegate = self
+        newsSearchBar.delegate = self
     }
     
     func configureSourceData() {
@@ -39,7 +40,7 @@ extension NewsController {
 //                self.news = newsResponse
 //                self.newsTableView.reloadData()
                 
-                let newsArrayCount = newsResponse!.date.count
+                guard let newsArrayCount = newsResponse?.newsDate.count else { return }
                 let headlineWrapped = self.wrapHeadlineArrayOfString(arrayMax: newsArrayCount, newsInput: newsResponse)
                 let snippetWrapped = self.wrapSnippetArrayOfString(arrayMax: newsArrayCount, newsInput: newsResponse)
                 let dateWrapped = self.wrapDateArrayOfString(arrayMax: newsArrayCount, newsInput: newsResponse)
@@ -77,7 +78,49 @@ extension NewsController {
                 newsCoreDataValue.append(newsCore)
             }
             completion(newsCoreDataValue)
-        } catch { }
+        } catch {
+            //kasi alert errornya apa terserah
+            print("request failed")
+        }
+    }
+    
+    func updateCoreData(headlineArray: [String?], snippetArray: [String?], dateArray: [Date?], imageArray: [Data], countedArray: Int, completion: ([NewsCore?]) -> Void) {
+        //disini fetch with Core Data
+        let context = PersistenceService.persistentContainer.viewContext
+        let request = NSBatchUpdateRequest(entityName: "NewsCoredata")
+        
+        for i in 0..<countedArray {
+            request.propertiesToUpdate = ["headlineCore": headlineArray[i]]
+            request.propertiesToUpdate = ["snippetCore": snippetArray[i]]
+            request.propertiesToUpdate = ["dateCore": dateArray[i]]
+            request.propertiesToUpdate = ["imageCore": imageArray[i]]
+            request.propertiesToUpdate = ["idCore": i]
+            request.resultType = .updatedObjectsCountResultType
+            
+            do {
+                try context.execute(request) as! NSBatchUpdateResult
+            } catch {}
+            
+            fetchCoreData { (fetchedCoreData) in
+                completion(fetchedCoreData)
+            }
+        }
+        
+        /*
+         let request = NSBatchUpdateRequest(entityName: "Student")
+         request.propertiesToUpdate = ["studentName":"Rajan Maheshwari"]
+         request.resultType = .updatedObjectsCountResultType
+         
+         do {
+         let start = currentTimeMillis()
+         let result = try context.execute(request) as! NSBatchUpdateResult
+         //Will print the number of rows affected/updated
+         print(result.result!)
+         print("Success")
+         print("Difference is \(currentTimeMillis() — start)")
+         }catch {
+         }
+         */
     }
     
     func setCacheCoreDataContainer(inputWrappedHeadlineArray: [String?], inputWrappedSnippetArray: [String?], inputWrappedDateArray: [Date?], inputWrappedImageArray: [Data]) {
@@ -86,12 +129,11 @@ extension NewsController {
         let context = PersistenceService.persistentContainer.viewContext
         if let cacheEntityDescription = NSEntityDescription.entity(forEntityName: "NewsCoredata", in: context) {
             
-            //data array
+            //data array counted
             let countedEachCategoryArray = (inputWrappedHeadlineArray.count + inputWrappedSnippetArray.count + inputWrappedDateArray.count + inputWrappedImageArray.count) / 4
                 print("News Network each array count: \(countedEachCategoryArray)")
             
             
-                //if firstRun eksekusi ini
                 if !firstRun {
                     for i in 0..<countedEachCategoryArray {
                         let cache = NSManagedObject(entity: cacheEntityDescription, insertInto: context)
@@ -115,15 +157,12 @@ extension NewsController {
                             }
                 }
                 else {
-                    /*update current Datanya saja*/
-                    fetchCoreData { (newsCoreDatas) in
-                        //abis fetch di save di ID key nya
+                    updateCoreData(headlineArray: inputWrappedHeadlineArray, snippetArray: inputWrappedSnippetArray, dateArray: inputWrappedDateArray, imageArray: inputWrappedImageArray, countedArray: countedEachCategoryArray) { (updatedCoredata) in
                         DispatchQueue.main.async {
-                            self.newsCoreDataArray = newsCoreDatas
+                            self.newsCoreDataArray = updatedCoredata
                             self.newsTableView.reloadData()
                         }
                     }
-                    //ini baru fetch nanti cek ulang dan save
                 }
             
         } else {print("failed open cache Entity Description")}
@@ -155,7 +194,7 @@ extension NewsController {
     func wrapHeadlineArrayOfString(arrayMax: Int, newsInput: NewsResponse?) -> [String?]{
         var wrappedHeadline = [String?]()
         for i in 0..<arrayMax {
-            let headline = newsInput?.headlines[i]?.headline
+            let headline = newsInput?.newsHeadlines[i]?.headline
             wrappedHeadline.append(headline)
         }
         return wrappedHeadline
@@ -164,7 +203,7 @@ extension NewsController {
     func wrapSnippetArrayOfString(arrayMax: Int, newsInput: NewsResponse?) -> [String?]{
         var wrappedSnippet = [String?]()
         for i in 0..<arrayMax {
-            let snippet = newsInput?.snippet[i]?.snippet
+            let snippet = newsInput?.newsSnippet[i]?.snippet
             wrappedSnippet.append(snippet)
         }
         return wrappedSnippet
@@ -173,7 +212,7 @@ extension NewsController {
     func wrapDateArrayOfString(arrayMax: Int, newsInput: NewsResponse?) -> [Date?]{
         var wrappedDate = [Date?]()
         for i in 0..<arrayMax {
-            let date = newsInput?.date[i]?.date
+            let date = newsInput?.newsDate[i]?.date
             wrappedDate.append(date)
         }
         return wrappedDate
@@ -182,13 +221,13 @@ extension NewsController {
     func wrapImageArrayOfString(arrayMax: Int, newsInput: NewsResponse?) -> [String?]{
         var wrappedImageString = [String?]()
         for i in 0..<arrayMax {
-            let wrappedMultimediaOptionalArray = newsInput?.responses[i]?.multimedia // ini state awal
+            let wrappedMultimediaOptionalArray = newsInput?.newsDocs[i]?.multimedia // ini state awal
             let currentImageStringIsNill = currentArrayisNill(wrappedOptionalArray: wrappedMultimediaOptionalArray)
             
             if currentImageStringIsNill == true {
                 wrappedImageString.append("")
             } else {
-                let imageString = newsInput?.responses[i]?.multimedia[0]?.url
+                let imageString = newsInput?.newsDocs[i]?.multimedia[0]?.url
                 wrappedImageString.append(imageString)
             }
         }

@@ -1,5 +1,5 @@
 //
-//  DetailNewsHelper.swift
+//  DetailNewsControllerExtension.swift
 //  SimpleNewsGideonApplication
 //
 //  Created by Gideon Benz on 04/04/19.
@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 extension DetailNewsController {
     func configureNavigation() {
@@ -43,16 +44,24 @@ extension DetailNewsController {
                 self.newsImageView.image = UIImage(data: imageBinary)
             } else { self.newsImageView.image = nil }
         }
+        configureFavoritedCoreData()
+    }
+    
+    func configureFavoritedCoreData() {
+        fetchFavoritedNews { (favoritedNewsCore) in
+            guard let newsCore = self.newsCore else { return }
+//            let filteredFavoriteNews = filterNewsCoreDataWithFavoritedNews(newsCore: newsCore, favoritedNewsCore: favoritedNewsCore)
+//            DispatchQueue.main.async {
+//                self.favoritedNewsCore = filteredFavoriteNews
+//            }
+        }
     }
 }
 
 
 
 
-
 extension DetailNewsController {
-    
-    //Attention!!!! beware with: minimal indexPath & maximal indexPath
     
     func swipeViewIsEnabled() {
         let swipeLeftViewGestureRecognizer = UISwipeGestureRecognizer(target: self , action: #selector(swipeAction(swipe:)))
@@ -72,15 +81,14 @@ extension DetailNewsController {
         default:
             break
         }
+        
     }
     
     func swipeToLeft() {
-        //kurangin indexnya terus convert ke current selected headline, snippet, date, imageData
-        print("swiped left")
         guard let newsCore = newsCore else { return }
         guard let selectedIndexPath = selectedIndexPath else { return }
         if selectedIndexPath > 0 {
-            var navigateIndexPath = selectedIndexPath - 1
+            let navigateIndexPath = selectedIndexPath - 1
             
             if let headline = newsCore[navigateIndexPath]?.headline {
                 self.headlineLabel.text = headline
@@ -103,17 +111,13 @@ extension DetailNewsController {
             }
             self.selectedIndexPath = navigateIndexPath
         } else { print("maxed Page") }
-        
-        
-        
-        
     }
     
     func swipeToRight() {
         guard let newsCore = newsCore else { return }
         guard let selectedIndexPath = selectedIndexPath else { return }
         if selectedIndexPath < newsCore.count - 1 {
-            var navigateIndexPath = selectedIndexPath + 1
+            let navigateIndexPath = selectedIndexPath + 1
             
             if let headline = newsCore[navigateIndexPath]?.headline {
                 self.headlineLabel.text = headline
@@ -138,7 +142,6 @@ extension DetailNewsController {
         } else { print("maxed Page") }
     }
 }
-
 extension DetailNewsController {
     private func convertDateFormaterToNormal(_ date: String) -> String {
         let dateFormatter = DateFormatter()
@@ -148,3 +151,101 @@ extension DetailNewsController {
         return  dateFormatter.string(from: date!)
     }
 }
+
+//MARK: Fetch Core Data
+extension DetailNewsController {
+    
+    func fetchFavoritedNews(completion: ([FavoritedNewsCore?]) -> Void) {
+        var favoritedNewsCoreDataValue = [FavoritedNewsCore?]()
+        let fetchRequest: NSFetchRequest<Favorite> = Favorite.fetchRequest()
+        do {
+            let favoritedNewsCoreDatas = try PersistenceService.context.fetch(fetchRequest)
+            
+            for favoritedNewsCoreData in favoritedNewsCoreDatas {
+                let favoriteNewsCore = FavoritedNewsCore(favoritedNewsCoreData: favoritedNewsCoreData)
+                favoritedNewsCoreDataValue.append(favoriteNewsCore)
+            }
+            completion(favoritedNewsCoreDataValue)
+        } catch { print("fetchFavoriteNews process failed")}
+    }
+    
+    func filterNewsCoreDataWithFavoritedNews(newsCore: [NewsCore?] ,favoritedNewsCore: [FavoritedNewsCore?]) -> [NewsCore?] {
+        var favoritedNewsFilteredValue = [NewsCore?]()
+        let favoritedNewsCoreCountedValue = newsCore.count
+        var favoritedNewsIndexPath = [Int]()
+        var isFavoritedNewsCore = [Bool]()
+        
+        for favoritedNews in favoritedNewsCore {
+            if let id = favoritedNews?.id {
+                favoritedNewsIndexPath.append(Int(id))
+            } else { print("error: filterNewsCoreDataWithFavoritedNews id nil") }
+            
+            if let isFavorited = favoritedNews?.isFavorited {
+                isFavoritedNewsCore.append(isFavorited)
+            } else { print("error: filterNewsCoreDataWithFavoritedNews isFavorited nil") }
+        }
+        
+        for i in 0..<favoritedNewsCoreCountedValue {
+            if isFavoritedNewsCore[i] == true {
+                favoritedNewsFilteredValue.append(newsCore[favoritedNewsIndexPath[i]])
+            }
+        }
+        
+        return favoritedNewsFilteredValue
+    }
+}
+
+//MARK: Save Core Data
+extension DetailNewsController {
+    
+    func saveFavoriteCellToCoreData() {
+        let context = PersistenceService.persistentContainer.viewContext
+        if let favoriteEntityDescription = NSEntityDescription.entity(forEntityName: "Favorite", in: context) {
+            let favorite = NSManagedObject(entity: favoriteEntityDescription, insertInto: context)
+            favorite.setValue(self.selectedIndexPath, forKey: "id")
+            favorite.setValue(self.isFavorited, forKey: "isFavorited")
+            
+            do {
+                try PersistenceService.saveContext()
+            } catch { print("Error: saveFavoriteCellToCoreData") }
+        }
+    }
+    
+//    func deleteFavoriteCellFromCoreData() {
+//        let context = PersistenceService.persistentContainer.viewContext
+//        if let favoriteEntityDescription = NSEntityDescription.entity(forEntityName: "Favorite", in: context) {
+//            guard let index = self.selectedIndexPath else { return }
+//
+//            context.delete(Favorite[index] as NSManagedObject)
+//
+//            do {
+//                try PersistenceService.saveContext()
+//            } catch { print("Error: saveFavoriteCellToCoreData") }
+//    }
+    
+        
+        func deleteFavoriteCellFromCoreData() {
+            let managedContext = PersistenceService.persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<Favorite>(entityName:"Favorite")
+            guard let selectedIndexPath = self.selectedIndexPath else { return }
+            fetchRequest.predicate = NSPredicate(format: "id = %@", selectedIndexPath)
+            do
+            {
+                let fetchedResults =  try managedContext.execute(fetchRequest) as? [NSManagedObject]
+                for entity in fetchedResults! {
+                    
+                    managedContext.delete(entity)
+                }
+            }
+            catch _ {
+                print("Could not delete")
+                
+            }
+            
+            do {
+                try PersistenceService.saveContext()
+            } catch  {print("Error: Save delete favorite")}
+        }
+}
+
+

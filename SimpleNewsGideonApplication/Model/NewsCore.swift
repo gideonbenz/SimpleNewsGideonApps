@@ -84,15 +84,6 @@ struct NewsCore {
     let image: Data?
     let id: Int16?
     
-    
-    private struct NewsKeys {
-        static let headline = "headlineCore"
-        static let snippet = "snippetCore"
-        static let image = "imageCore"
-        static let date = "dateCore"
-        static let id = "idCore"
-    }
-    
     init?(newsCoreData : NewsCoredata) {
         
         let headlineCore = newsCoreData.headlineCore

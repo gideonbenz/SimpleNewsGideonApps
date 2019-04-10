@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rgh-Ag-T5a">
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Rgh-Ag-T5a">
                                 <rect key="frame" x="0.0" y="88" width="414" height="56"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -52,7 +52,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="70" id="qIe-mC-xBG"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="21"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -89,7 +89,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="suL-Vc-7V5"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="21"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -133,11 +133,12 @@
                     <navigationItem key="navigationItem" id="g4i-u7-vka">
                         <barButtonItem key="rightBarButtonItem" title="Favorite" id="mas-he-ZnL">
                             <connections>
-                                <segue destination="ank-fK-ito" kind="show" id="F8T-c8-tJg"/>
+                                <segue destination="ank-fK-ito" kind="show" identifier="FavoriteNews" id="F8T-c8-tJg"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="newsSearchBar" destination="Rgh-Ag-T5a" id="HRM-K2-Z3z"/>
                         <outlet property="newsTableView" destination="bRk-22-mFD" id="gdO-7t-Dd4"/>
                         <segue destination="oT4-ys-wB6" kind="show" identifier="DetailNews" id="DfU-jt-ncB"/>
                     </connections>

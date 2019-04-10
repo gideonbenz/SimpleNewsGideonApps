@@ -10,27 +10,132 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Favorite Controller-->
         <scene sceneID="5l2-6P-xZ9">
             <objects>
-                <viewController id="JtC-nB-wYw" sceneMemberID="viewController">
+                <viewController id="JtC-nB-wYw" customClass="FavoriteController" customModule="SimpleNewsGideonApplication" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="irj-NR-Sjy">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5B6-0X-8ds">
-                                <rect key="frame" x="0.0" y="176" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5B6-0X-8ds" userLabel="FavoriteTableView">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FrontFavoriteNewsCell" rowHeight="110" id="JlW-X4-i5u" userLabel="FrontFavoriteNewsTVCell" customClass="FrontFavoriteNewsTVCell" customModule="SimpleNewsGideonApplication" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="110"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JlW-X4-i5u" id="Kot-jd-K2s">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="109.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2pX-br-cqZ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="140" height="110.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="140" id="9is-sl-TWX"/>
+                                                        <constraint firstAttribute="height" constant="110" id="hzm-qR-F2e"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NCL-KF-B1d">
+                                                    <rect key="frame" x="148" y="0.0" width="254" height="70.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="70" id="lue-1s-QXo"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U1l-fj-naM">
+                                                    <rect key="frame" x="148" y="74.5" width="254" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="U1l-fj-naM" firstAttribute="trailing" secondItem="NCL-KF-B1d" secondAttribute="trailing" id="2jT-0A-XgR"/>
+                                                <constraint firstAttribute="bottom" secondItem="2pX-br-cqZ" secondAttribute="bottom" id="56f-Bo-ZtO"/>
+                                                <constraint firstItem="2pX-br-cqZ" firstAttribute="leading" secondItem="Kot-jd-K2s" secondAttribute="leading" id="D0k-Ep-h0N"/>
+                                                <constraint firstItem="NCL-KF-B1d" firstAttribute="leading" secondItem="2pX-br-cqZ" secondAttribute="trailing" constant="8" id="Jd0-Bk-25J"/>
+                                                <constraint firstItem="NCL-KF-B1d" firstAttribute="top" secondItem="2pX-br-cqZ" secondAttribute="top" id="Ryb-Jv-pa8"/>
+                                                <constraint firstAttribute="trailing" secondItem="NCL-KF-B1d" secondAttribute="trailing" constant="12" id="VeO-YN-Vrd"/>
+                                                <constraint firstItem="U1l-fj-naM" firstAttribute="leading" secondItem="NCL-KF-B1d" secondAttribute="leading" id="Xmz-uT-Wwx"/>
+                                                <constraint firstItem="2pX-br-cqZ" firstAttribute="top" secondItem="Kot-jd-K2s" secondAttribute="top" id="c13-Gs-JiA"/>
+                                                <constraint firstItem="U1l-fj-naM" firstAttribute="top" secondItem="NCL-KF-B1d" secondAttribute="bottom" constant="4" id="gs1-d9-grd"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="favoriteDateNewsLabel" destination="U1l-fj-naM" id="t0H-ZO-0P3"/>
+                                            <outlet property="favoriteHeadlineNewsLabel" destination="NCL-KF-B1d" id="Pyd-7n-HMO"/>
+                                            <outlet property="favoriteNewsImageView" destination="2pX-br-cqZ" id="ioc-kP-YvX"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FavoriteNewsCellNonImage" rowHeight="110" id="SkQ-2w-Wji" customClass="FavoriteNewsCellNonImageTVCell" customModule="SimpleNewsGideonApplication" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="138" width="414" height="110"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SkQ-2w-Wji" id="7bn-97-0Bg">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="109.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lld-bf-szQ">
+                                                    <rect key="frame" x="16" y="12" width="382" height="60"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="60" id="3Q6-fz-lhw"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iY2-qY-di3">
+                                                    <rect key="frame" x="16" y="78" width="382" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="lld-bf-szQ" firstAttribute="top" secondItem="7bn-97-0Bg" secondAttribute="top" constant="12" id="1B1-jC-F92"/>
+                                                <constraint firstItem="iY2-qY-di3" firstAttribute="trailing" secondItem="lld-bf-szQ" secondAttribute="trailing" id="4ZA-3t-q05"/>
+                                                <constraint firstItem="iY2-qY-di3" firstAttribute="leading" secondItem="lld-bf-szQ" secondAttribute="leading" id="JcV-yV-zta"/>
+                                                <constraint firstAttribute="bottom" secondItem="iY2-qY-di3" secondAttribute="bottom" constant="10.5" id="WmA-1Y-kHJ"/>
+                                                <constraint firstAttribute="trailing" secondItem="lld-bf-szQ" secondAttribute="trailing" constant="16" id="XPO-qx-C3w"/>
+                                                <constraint firstItem="lld-bf-szQ" firstAttribute="leading" secondItem="7bn-97-0Bg" secondAttribute="leading" constant="16" id="glM-k4-DjI"/>
+                                                <constraint firstItem="iY2-qY-di3" firstAttribute="top" secondItem="lld-bf-szQ" secondAttribute="bottom" constant="6" id="lTY-fE-Ddc"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="favoriteDateLabel" destination="iY2-qY-di3" id="Hp4-qz-CDn"/>
+                                            <outlet property="favoriteHeadlineLabel" destination="lld-bf-szQ" id="lO6-c2-EQR"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="WQB-xb-8zs" firstAttribute="trailing" secondItem="5B6-0X-8ds" secondAttribute="trailing" id="KKp-8M-cwE"/>
+                            <constraint firstItem="WQB-xb-8zs" firstAttribute="bottom" secondItem="5B6-0X-8ds" secondAttribute="bottom" id="SUV-w5-MvG"/>
+                            <constraint firstItem="5B6-0X-8ds" firstAttribute="top" secondItem="WQB-xb-8zs" secondAttribute="top" id="hq8-tb-WGI"/>
+                            <constraint firstItem="5B6-0X-8ds" firstAttribute="leading" secondItem="WQB-xb-8zs" secondAttribute="leading" id="rJh-hY-jVy"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="WQB-xb-8zs"/>
                     </view>
+                    <connections>
+                        <outlet property="favoriteTableView" destination="5B6-0X-8ds" id="BQY-py-0L7"/>
+                        <segue destination="yb2-uP-VnZ" kind="show" identifier="DetailNews" id="ErJ-3e-Xzd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ofH-N4-SoG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="122" y="133"/>
+        </scene>
+        <!--DetailNews-->
+        <scene sceneID="dcg-lY-yam">
+            <objects>
+                <viewControllerPlaceholder storyboardName="DetailNews" id="yb2-uP-VnZ" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WDu-M3-hIf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="624" y="133"/>
         </scene>
     </scenes>
 </document>

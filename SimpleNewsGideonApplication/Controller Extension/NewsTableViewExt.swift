@@ -1,5 +1,5 @@
 //
-//  TableViewHelper.swift
+//  NewsTableViewExtension.swift
 //  SimpleNewsGideonApplication
 //
 //  Created by Gideon Benz on 03/04/19.

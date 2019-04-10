@@ -1,17 +1,18 @@
 //
-//  NewsCellNonImageTVCell.swift
+//  FrontFavoriteNewsTVCell.swift
 //  SimpleNewsGideonApplication
 //
-//  Created by Gideon Benz on 30/03/19.
+//  Created by Gideon Benz on 08/04/19.
 //  Copyright © 2019 Gideon Benz. All rights reserved.
 //
 
 import UIKit
 
-class NewsCellNonImageTVCell: UITableViewCell {
-    @IBOutlet weak var headlineLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    
+class FrontFavoriteNewsTVCell: UITableViewCell {
+
+    @IBOutlet weak var favoriteHeadlineNewsLabel: UILabel!
+    @IBOutlet weak var favoriteDateNewsLabel: UILabel!
+    @IBOutlet weak var favoriteNewsImageView: UIImageView!
     var indexCell: Int?
     var date = Date()
     var dateString = String()
@@ -25,17 +26,32 @@ class NewsCellNonImageTVCell: UITableViewCell {
     
     func updateCoreDataUI() {
         if let headline = newsCoreDataFeed.headline {
-            headlineLabel.text = headline
+            favoriteHeadlineNewsLabel.text = headline
         }
-
+        
         if let date = newsCoreDataFeed.date {
             dateString = "\(date)"
             dateConverted = convertDateFormaterToNormal(dateString)
-
-            dateLabel.text = "\(dateConverted)"
+            
+            favoriteDateNewsLabel.text = "\(dateConverted)"
         }
+        
+        if newsCoreDataFeed.image != Data() {
+            if let imageCore = newsCoreDataFeed.image {
+                self.favoriteNewsImageView.image = UIImage(data: imageCore)
+            }
+        } else { self.favoriteNewsImageView.image = nil }
     }
-    
+}
+
+extension FrontFavoriteNewsTVCell {
+    private func convertDateFormaterToNormal(_ date: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
+        let date = dateFormatter.date(from: date)
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        return  dateFormatter.string(from: date!)
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -44,14 +60,4 @@ class NewsCellNonImageTVCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-}
-
-extension NewsCellNonImageTVCell {
-    private func convertDateFormaterToNormal(_ date: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
-        let date = dateFormatter.date(from: date)
-        dateFormatter.dateFormat = "dd-MM-yyyy"
-        return  dateFormatter.string(from: date!)
-    }
 }
